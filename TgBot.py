@@ -125,7 +125,7 @@ def SendAllUsersToClose(symbol, term, additionalText = ""):
     
 def SendError(text):
         try:
-            text ="AN ERROR OCCURED\n" + text
+            text =name + '\n' +"AN ERROR OCCURED\n" + text
             bot.send_message( chat_id,text)
         except:
             print ('Error')

@@ -107,12 +107,12 @@ try:
             if position not in numRes:
                 for b in Bets:
                     if position.symbol == b.symbol:
-                        print('Close Bet ' + item)
+                        print('Close Bet ' + position.symbol)
                         try:
-                            BinanceHelper.CloseOrder(item, not b.side)
+                            BinanceHelper.CloseOrder(position.symbol, not b.side)
                         except Exception as e:
                             TgBot.SendError("Failed : {0}\n".format(str(e)))
-                        TgBot.SendAllUsersToClose(item, b.side)
+                        TgBot.SendAllUsers1(usr, position)
                         Bets.remove(b)
                         break
                 print('CLOSE ' + usr.name +' ' + position.symbol +' ' + position.term)
