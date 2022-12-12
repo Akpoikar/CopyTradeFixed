@@ -42,6 +42,9 @@ def GetPrecision(symbol):
     val={si['symbol']:si['quantityPrecision'] for si in exchangeinfo['symbols'] if si['symbol'] in requestedFutures}
     return val[symbol]
 
+def ChangeLeverage(positionToIns):
+    client.futures_change_leverage(symbol=positionToIns.symbol,leverage=positionToIns.leverage)
+
 def CreateOrder(positionToIns,side):
     ratio = TgBot.GetRatio()
     sym = client.futures_symbol_ticker(symbol = positionToIns.symbol)
@@ -59,6 +62,28 @@ def CreateOrder(positionToIns,side):
         Term = 'SELL' 
     client.futures_create_order(
         symbol=positionToIns.symbol,
+        type='MARKET',
+        side=Term,
+        quantity=q
+    )
+
+def UpdateOrder(positionToIns,side,amount):
+    ratio = TgBot.GetRatio()
+    sym = client.futures_symbol_ticker(symbol = positionToIns.symbol)
+    # laverage = maxLeverage(symbol1)
+    laverage = int(positionToIns.leverage)
+    client.futures_change_leverage(symbol=positionToIns.symbol,leverage=laverage)
+
+    precision = GetPrecision(positionToIns.symbol)
+    q = abs(ratio * positionToIns.amount)
+    q = float("{:.{}f}".format(q,precision))
+    Term = ''
+    if side == True:
+        Term = 'BUY'
+    else:
+        Term = 'SELL' 
+    client.futures_create_order(
+        symbol=amount,
         type='MARKET',
         side=Term,
         quantity=q

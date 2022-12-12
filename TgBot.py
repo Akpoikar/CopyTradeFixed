@@ -90,12 +90,31 @@ def SendAllUsers1(tmpUser, positionToIns):
                 roe = str("{:.2f}".format(positionToIns.roe)) + '% ❌'
             for bet in BettingPositions:
                 if(bet.userId == tmpUser.id and positionToIns.symbol == bet.symbol):
-                    bot.reply_to( bet.msgid,name + '\n' +"🔒Close: " + tmpUser.name +'\nTime: ' + date + '\n\n' +"Symbol : " + positionToIns.symbol + '\n' + 'Type: ' + positionToIns.term + '\n' + 'Open price: ' + str(positionToIns.entryPrice) + '\nClosing price: ' + str(positionToIns.markPrice) + '\nPnL: ' + pnl + '\nRoe: ' + roe)
+                    bot.reply_to( bet.msgid,name + '\n' +"🔒Close: " + tmpUser.name +'\nTime: ' + date + '\n\n' +"Symbol : " + positionToIns.symbol + '\n' +"Amount : " + positionToIns.amount + '\n' + 'Type: ' + positionToIns.term + '\n' + 'Open price: ' + str(positionToIns.entryPrice) + '\nClosing price: ' + str(positionToIns.markPrice) + '\nPnL: ' + pnl + '\nRoe: ' + roe)
                     BettingPositions.remove(bet)
                     break
     except:
         print ('Error')
 
+def SendAllUsersChange(tmpUser, positionToIns, text):
+    try:
+        if tmpUser.id in UsersToFollow:
+            epoch = datetime.datetime.fromtimestamp(positionToIns.time/1000.0)           
+            date = str(epoch.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
+            pnl = ''
+            roe = ''
+            if positionToIns.pnl > 0:
+                pnl = str("{:.2f}".format(positionToIns.pnl))
+                roe = '+' + str("{:.2f}".format(positionToIns.roe)) +  '% ✅'
+            else:
+                pnl = str("{:.2f}".format(positionToIns.pnl))
+                roe = str("{:.2f}".format(positionToIns.roe)) + '% ❌'
+            for bet in BettingPositions:
+                if(bet.userId == tmpUser.id and positionToIns.symbol == bet.symbol):
+                    bot.reply_to( bet.msgid,name + '\n' +"Change " +text+": " + tmpUser.name +'\nTime: ' + date + '\n\n' +"Symbol : " + positionToIns.symbol + '\n' +"Amount : " + positionToIns.amount + '\n' + 'Type: ' + positionToIns.term + '\n' + 'Open price: ' + str(positionToIns.entryPrice) + '\nClosing price: ' + str(positionToIns.markPrice) + '\nPnL: ' + pnl + '\nRoe: ' + roe)
+                    break
+    except:
+        print ('Error')
 
 
 def SendAllUsersToBet(symbol, term):
