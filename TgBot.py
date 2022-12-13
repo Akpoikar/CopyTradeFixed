@@ -71,8 +71,8 @@ def SendAllUsers(tmpUser, positionToIns):
                 msgId = bot.send_message( chat_id,name + '\n' +"🚨Open : " + tmpUser.name +'\nTime: ' + date + '\n\n' +"Symbol: " + positionToIns.symbol + '\n' + '\nAmount:' + str(positionToIns.amount) + '\n' + 'Type: ' + positionToIns.term + '\n' + 'Market price: ' + str(positionToIns.entryPrice) + '\nLeverage : ' + str(positionToIns.leverage))
                 pos = BettingPosition(tmpUser.id,positionToIns.symbol,msgId)
                 BettingPositions.append(pos)
-    except:
-        print ('Error')
+    except Exception as e:
+        print ("Failed : {0}\n".format(str(e)))
 
 def SendAllUsers1(tmpUser, positionToIns):
     try:
@@ -90,11 +90,11 @@ def SendAllUsers1(tmpUser, positionToIns):
                 roe = str("{:.2f}".format(positionToIns.roe)) + '% ❌'
             for bet in BettingPositions:
                 if(bet.userId == tmpUser.id and positionToIns.symbol == bet.symbol):
-                    bot.reply_to( bet.msgid,name + '\n' +"🔒Close: " + tmpUser.name +'\nTime: ' + date + '\n\n' +"Symbol : " + positionToIns.symbol + '\n' +"Amount : " + positionToIns.amount + '\n' + 'Type: ' + positionToIns.term + '\n' + 'Open price: ' + str(positionToIns.entryPrice) + '\nClosing price: ' + str(positionToIns.markPrice) + '\nPnL: ' + pnl + '\nRoe: ' + roe)
+                    bot.reply_to( bet.msgid,name + '\n' +"🔒Close: " + tmpUser.name +'\nTime: ' + date + '\n\n' +"Symbol : " + positionToIns.symbol + '\n' +"Amount : " + str(positionToIns.amount) + '\n' + 'Type: ' + positionToIns.term + '\n' + 'Open price: ' + str(positionToIns.entryPrice) + '\nClosing price: ' + str(positionToIns.markPrice) + '\nPnL: ' + pnl + '\nRoe: ' + roe+ '\nLeverage : ' + str(positionToIns.leverage))
                     BettingPositions.remove(bet)
                     break
-    except:
-        print ('Error')
+    except Exception as e:
+        print ("Failed : {0}\n".format(str(e)))
 
 def SendAllUsersChange(tmpUser, positionToIns, text):
     try:
@@ -111,10 +111,10 @@ def SendAllUsersChange(tmpUser, positionToIns, text):
                 roe = str("{:.2f}".format(positionToIns.roe)) + '% ❌'
             for bet in BettingPositions:
                 if(bet.userId == tmpUser.id and positionToIns.symbol == bet.symbol):
-                    bot.reply_to( bet.msgid,name + '\n' +"Change " +text+": " + tmpUser.name +'\nTime: ' + date + '\n\n' +"Symbol : " + positionToIns.symbol + '\n' +"Amount : " + positionToIns.amount + '\n' + 'Type: ' + positionToIns.term + '\n' + 'Open price: ' + str(positionToIns.entryPrice) + '\nClosing price: ' + str(positionToIns.markPrice) + '\nPnL: ' + pnl + '\nRoe: ' + roe)
+                    bot.reply_to( bet.msgid,name + '\n' +"Change " +text+": " + tmpUser.name +'\nTime: ' + date + '\n\n' +"Symbol : " + positionToIns.symbol + '\n' +"Amount : " + str(positionToIns.amount) + '\n' + 'Type: ' + positionToIns.term + '\n' + 'Open price: ' + str(positionToIns.entryPrice) + '\Mark price: ' + str(positionToIns.markPrice) + '\nPnL: ' + pnl + '\nRoe: ' + roe+ '\nLeverage : ' + str(positionToIns.leverage))
                     break
-    except:
-        print ('Error')
+    except Exception as e:
+        print ("Failed : {0}\n".format(str(e)))
 
 
 def SendAllUsersToBet(symbol, term):

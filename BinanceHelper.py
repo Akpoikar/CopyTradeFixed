@@ -1,6 +1,6 @@
 import TgBot
 from binance import Client, ThreadedWebsocketManager, ThreadedDepthCacheManager
-
+from Person import Position
 file1 = open('config.txt', 'r')
 lines = file1.read().splitlines()
 API_Key = lines[0]
@@ -53,7 +53,8 @@ def CreateOrder(positionToIns,side):
     client.futures_change_leverage(symbol=positionToIns.symbol,leverage=laverage)
 
     precision = GetPrecision(positionToIns.symbol)
-    q = abs(ratio * positionToIns.amount)
+    q = abs(ratio * positionToIns.amount)  
+    #q = ratio
     q = float("{:.{}f}".format(q,precision))
     Term = ''
     if side == True:
@@ -82,12 +83,19 @@ def UpdateOrder(positionToIns,side,amount):
         Term = 'BUY'
     else:
         Term = 'SELL' 
+    
+    if Term == "SELL" and amount > 0:
+        Term = 'BUY'
+    if Term == 'BUY' and amount < 0:
+        Term = 'SELL'
     client.futures_create_order(
-        symbol=amount,
+        symbol=positionToIns.symbol,
         type='MARKET',
         side=Term,
-        quantity=q
+        quantity=abs(amount)
     )
+
+
 
 orders = client.futures_account()['positions']
 
