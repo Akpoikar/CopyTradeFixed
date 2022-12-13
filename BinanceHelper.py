@@ -76,7 +76,7 @@ def UpdateOrder(positionToIns,side,amount):
     client.futures_change_leverage(symbol=positionToIns.symbol,leverage=laverage)
 
     precision = GetPrecision(positionToIns.symbol)
-    q = abs(ratio * positionToIns.amount)
+    q = abs(ratio * amount)
     q = float("{:.{}f}".format(q,precision))
     Term = ''
     if side == True:
@@ -92,7 +92,7 @@ def UpdateOrder(positionToIns,side,amount):
         symbol=positionToIns.symbol,
         type='MARKET',
         side=Term,
-        quantity=abs(amount)
+        quantity=q
     )
 
 
