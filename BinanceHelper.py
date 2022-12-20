@@ -48,12 +48,13 @@ def ChangeLeverage(positionToIns):
 def CreateOrder(positionToIns,side):
     ratio = TgBot.GetRatio()
     sym = client.futures_symbol_ticker(symbol = positionToIns.symbol)
-    # laverage = maxLeverage(symbol1)
     laverage = int(positionToIns.leverage)
     client.futures_change_leverage(symbol=positionToIns.symbol,leverage=laverage)
 
+    num = (ratio)/float(sym['price'])
+    q=float(laverage*num)
     precision = GetPrecision(positionToIns.symbol)
-    q = abs(ratio * positionToIns.amount)  
+    # q = abs(ratio * positionToIns.amount)  
     #q = ratio
     q = float("{:.{}f}".format(q,precision))
     Term = ''
@@ -96,7 +97,6 @@ def UpdateOrder(positionToIns,side,amount):
     )
 
 
-
 orders = client.futures_account()['positions']
 
 for o in orders:
@@ -136,7 +136,7 @@ def CloseOrder(Pos, side):
                 side=Term,
                 quantity=str(abs(q))
             )
-# CloseAllOrders()
+
 
 #info = client.get_symbol_info(symbol='BNBBTC')
 print('End')

@@ -39,6 +39,7 @@ def Greetings(msg):
 @bot.message_handler(commands=['setratio'])
 def SetRatio(msg):
     try:
+        global ratio
         messageText = msg.text.split()[1]
         ratio = float(messageText)
     except:

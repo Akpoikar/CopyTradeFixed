@@ -164,20 +164,20 @@ try:
                             position.markPrice = data["markPrice"]
                             position.pnl = float("{:.2f}".format(data["pnl"]))
                             position.roe = float("{:.4f}".format(data["roe"]))*100
-                            if(position.amount != data["amount"]):
-                                try:
-                                    BinanceHelper.UpdateOrder(position ,flag,data["amount"] - position.amount)
-                                except Exception as e:
-                                    TgBot.SendError("Failed : {0}\n".format(str(e)))
-                                position.amount = data["amount"]
-                                TgBot.SendAllUsersChange(tmpUser,position,"Amount")
-                            if(position.leverage != data["leverage"]):
-                                position.leverage = data["leverage"]
-                                try:
-                                    BinanceHelper.ChangeLeverage(position)
-                                except Exception as e:
-                                    TgBot.SendError("Failed : {0}\n".format(str(e)))
-                                TgBot.SendAllUsersChange(tmpUser,position,"Leverage")
+                            # if(position.amount != data["amount"]):
+                            #     try:
+                            #         BinanceHelper.UpdateOrder(position ,flag,data["amount"] - position.amount)
+                            #     except Exception as e:
+                            #         TgBot.SendError("Failed : {0}\n".format(str(e)))
+                            #     position.amount = data["amount"]
+                            #     TgBot.SendAllUsersChange(tmpUser,position,"Amount")
+                            # if(position.leverage != data["leverage"]):
+                            #     position.leverage = data["leverage"]
+                            #     try:
+                            #         BinanceHelper.ChangeLeverage(position)
+                            #     except Exception as e:
+                            #         TgBot.SendError("Failed : {0}\n".format(str(e)))
+                            #     TgBot.SendAllUsersChange(tmpUser,position,"Leverage")
                             break
 
             CheckIfClosed(tmpUser,userData["data"]["otherPositionRetList"])
