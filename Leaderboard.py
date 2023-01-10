@@ -21,7 +21,8 @@ try:
         while(True):
             try:
                 req = requests.post(url = LeaderboardURL, json = usrPyaload)
-                return req.json()
+                responseJson = req.json()
+                return responseJson
             except requests.exceptions.RequestException as e:
                 time.sleep(10)
             
@@ -32,7 +33,8 @@ try:
                 usrPyaload = UserPayload
                 usrPyaload["encryptedUid"] = encryptedId
                 req = requests.post(url = PositionsURL, json = usrPyaload)
-                return req.json()
+                responseJson = req.json()
+                return responseJson
             except Exception as e:
                 time.sleep(10)
         
