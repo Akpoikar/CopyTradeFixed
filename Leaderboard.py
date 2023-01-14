@@ -24,6 +24,7 @@ try:
                 responseJson = req.json()
                 return responseJson
             except requests.exceptions.RequestException as e:
+                print("Error GetLeaderboardData: {0}\n".format(str(e)))
                 time.sleep(10)
             
 
@@ -36,6 +37,7 @@ try:
                 responseJson = req.json()
                 return responseJson
             except Exception as e:
+                print("Error GetPositionsData: {0}\n".format(str(e)))
                 time.sleep(10)
         
 
@@ -66,17 +68,15 @@ try:
         symbol = data["symbol"]
         entryPrice = data["entryPrice"]
         markPrice = data["markPrice"]
-        pnl = float("{:.2f}".format(data["pnl"]))
-        roe = float("{:.4f}".format(data["roe"]))*100
+        pnl = data["pnl"]
+        roe = data["roe"]*100
         updateTime = data["updateTimeStamp"]
         leverage = data["leverage"]
         amount = data["amount"]
         positionTerm = ""
-        if pnl == 0 or roe == 0 or entryPrice == markPrice:
-            return None
-        if (entryPrice < markPrice and pnl > 0) or (entryPrice > markPrice and pnl < 0):
+        if amount > 0:
                 positionTerm = "LONG🟢"
-        elif(entryPrice > markPrice and pnl > 0) or (entryPrice < markPrice and pnl < 0):
+        elif amount < 0:
                 positionTerm = "SHORT🔴"
         else:
             print("WHY")
@@ -151,7 +151,7 @@ try:
                         flag = False
                     b = Bet(positionToIns.symbol,flag)
                     if  b not in Bets:
-                        print('Send bet' + positionToIns.symbol)
+                        print('Send bet ' + positionToIns.symbol)
                         try:
                             BinanceHelper.CreateOrder(positionToIns ,flag)
                         except Exception as e:

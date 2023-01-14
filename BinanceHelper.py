@@ -46,6 +46,7 @@ def ChangeLeverage(positionToIns):
     client.futures_change_leverage(symbol=positionToIns.symbol,leverage=positionToIns.leverage)
 
 def CreateOrder(positionToIns,side):
+    client = Client(API_Key, Secret_Key)
     ratio = TgBot.GetRatio()
     sym = client.futures_symbol_ticker(symbol = positionToIns.symbol)
     laverage = int(positionToIns.leverage)
@@ -70,6 +71,7 @@ def CreateOrder(positionToIns,side):
     )
 
 def UpdateOrder(positionToIns,side,amount):
+    client = Client(API_Key, Secret_Key)
     ratio = TgBot.GetRatio()
     sym = client.futures_symbol_ticker(symbol = positionToIns.symbol)
     # laverage = maxLeverage(symbol1)
@@ -117,6 +119,7 @@ def CloseAllOrders():
             )
 
 def CloseOrder(Pos, side):
+    client = Client(API_Key, Secret_Key)
     orders = client.futures_account()['positions']
     
     for o in orders:
