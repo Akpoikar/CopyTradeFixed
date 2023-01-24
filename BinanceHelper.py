@@ -26,6 +26,12 @@ for i in info["balances"]:
     if float(i['free']) > 0:
         print(i)
 
+acc_balance = client.futures_account_balance()
+
+for check_balance in acc_balance:
+    if check_balance["asset"] == "USDT":
+        usdt_balance = check_balance["balance"]
+        print(usdt_balance)
 def maxLeverage(pair):
     result = client.futures_leverage_bracket()
     res = client.futures_coin_leverage_bracket()
@@ -49,7 +55,10 @@ def CreateOrder(positionToIns,side):
     client = Client(API_Key, Secret_Key)
     ratio = TgBot.GetRatio()
     sym = client.futures_symbol_ticker(symbol = positionToIns.symbol)
-    laverage = int(positionToIns.leverage)
+    laverage = TgBot.GetLeverage()
+    if laverage == 0:
+        laverage = int(positionToIns.leverage)
+
     client.futures_change_leverage(symbol=positionToIns.symbol,leverage=laverage)
 
     num = (ratio)/float(sym['price'])
@@ -73,9 +82,11 @@ def CreateOrder(positionToIns,side):
 def UpdateOrder(positionToIns,side,amount):
     client = Client(API_Key, Secret_Key)
     ratio = TgBot.GetRatio()
+    laverage = TgBot.GetLeverage()
     sym = client.futures_symbol_ticker(symbol = positionToIns.symbol)
     # laverage = maxLeverage(symbol1)
-    laverage = int(positionToIns.leverage)
+    if laverage == 0:
+        laverage = int(positionToIns.leverage)
     client.futures_change_leverage(symbol=positionToIns.symbol,leverage=laverage)
 
     precision = GetPrecision(positionToIns.symbol)
@@ -100,23 +111,30 @@ def UpdateOrder(positionToIns,side,amount):
 
 
 orders = client.futures_account()['positions']
-
+a = 0
 for o in orders:
         if float(o['maintMargin']) > 0:
-         print (o['symbol'] + ' ' + o['maintMargin'])
+         a+=float(o['unrealizedProfit'])
+         print (o['symbol'] + ' ' + o['maintMargin'] +' '+o['leverage']+' '+ o['unrealizedProfit'])
+print(a)
+
 def CloseAllOrders():
     orders = client.futures_account()['positions']
 
     for o in orders:
         if float(o['maintMargin']) > 0:
+            CloseOrder(o['symbol'], 'SELL')
+            continue
             precision = GetPrecision(o['symbol'])
             q = float("{:.{}f}".format((-1*float(o['positionAmt'])),precision))    
             client.futures_create_order(
                 symbol=o['symbol'],
                 type='MARKET',
-                side='BUY',
+                side='SELL',
                 quantity=str(abs(q))
             )
+
+# CloseAllOrders()
 
 def CloseOrder(Pos, side):
     client = Client(API_Key, Secret_Key)
@@ -140,6 +158,7 @@ def CloseOrder(Pos, side):
                 quantity=str(abs(q))
             )
 
-
+# CloseAllOrders()
+# CloseOrder('RVNUSDT',False)
 #info = client.get_symbol_info(symbol='BNBBTC')
 print('End')

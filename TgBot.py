@@ -12,7 +12,7 @@ chat_id = int(lines[3])
 ratio = float(lines[4])
 name = lines[5]
 file1.close()
-
+leverage = 0
 bot = telebot.TeleBot(API_Key)
 
 UsersToFollow = []
@@ -45,6 +45,14 @@ def SetRatio(msg):
     except:
         print ('Error')
 
+@bot.message_handler(commands=['setleverage'])
+def SetLeverage(msg):
+    try:
+        global leverage
+        messageText = msg.text.split()[1]
+        leverage = float(messageText)
+    except:
+        print ('Error')
 
 @bot.message_handler(commands=['unfollow'])
 def UnFollow(msg):
@@ -159,3 +167,6 @@ def GetAllUsers():
 
 def GetRatio():
     return ratio 
+
+def GetLeverage():
+    return leverage 
