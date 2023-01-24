@@ -55,7 +55,7 @@ def CreateOrder(positionToIns,side):
     client = Client(API_Key, Secret_Key)
     ratio = TgBot.GetRatio()
     sym = client.futures_symbol_ticker(symbol = positionToIns.symbol)
-    laverage = TgBot.GetLeverage()
+    laverage = int(TgBot.GetLeverage())
     if laverage == 0:
         laverage = int(positionToIns.leverage)
 
