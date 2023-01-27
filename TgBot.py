@@ -60,7 +60,7 @@ def SetLimit(msg):
     try:
         global positionLimit
         messageText = msg.text.split()[1]
-        positionLimit = float(messageText)
+        positionLimit = int(messageText)
     except:
         print ('Error')
 
