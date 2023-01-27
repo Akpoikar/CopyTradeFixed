@@ -13,6 +13,7 @@ ratio = float(lines[4])
 name = lines[5]
 file1.close()
 leverage = 0
+positionLimit = 30
 bot = telebot.TeleBot(API_Key)
 
 UsersToFollow = []
@@ -51,6 +52,15 @@ def SetLeverage(msg):
         global leverage
         messageText = msg.text.split()[1]
         leverage = float(messageText)
+    except:
+        print ('Error')
+
+@bot.message_handler(commands=['setlimit'])
+def SetLimit(msg):
+    try:
+        global positionLimit
+        messageText = msg.text.split()[1]
+        positionLimit = float(messageText)
     except:
         print ('Error')
 
@@ -170,3 +180,7 @@ def GetRatio():
 
 def GetLeverage():
     return leverage 
+
+
+def GetLimits():
+    return positionLimit     

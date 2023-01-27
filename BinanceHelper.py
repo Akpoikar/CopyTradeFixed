@@ -159,6 +159,6 @@ def CloseOrder(Pos, side):
             )
 
 # CloseAllOrders()
-# CloseOrder('RVNUSDT',False)
+# CloseOrder('STGUSDT',False)
 #info = client.get_symbol_info(symbol='BNBBTC')
 print('End')
