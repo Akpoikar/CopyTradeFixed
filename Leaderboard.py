@@ -153,7 +153,7 @@ try:
                     if  b not in Bets:
                         print('Send bet ' + positionToIns.symbol)
                         try:
-                            if Bets.count() < TgBot.GetLimits():
+                            if len(Bets) < TgBot.GetLimits():
                                 BinanceHelper.CreateOrder(positionToIns ,flag)
                         except Exception as e:
                             TgBot.SendError("Failed : {0}\n".format(str(e)))
