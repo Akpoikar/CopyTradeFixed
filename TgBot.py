@@ -13,7 +13,7 @@ ratio = float(lines[4])
 name = lines[5]
 file1.close()
 leverage = 0
-positionLimit = 30
+positionLimit = 10
 bot = telebot.TeleBot(API_Key)
 
 UsersToFollow = []

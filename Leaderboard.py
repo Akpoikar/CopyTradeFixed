@@ -24,8 +24,7 @@ try:
                 responseJson = req.json()
                 return responseJson
             except requests.exceptions.RequestException as e:
-                print("Error GetLeaderboardData: {0}\n".format(str(e)))
-                time.sleep(10)
+                time.sleep(1)
             
 
     def GetPositionsData(encryptedId):
@@ -37,8 +36,7 @@ try:
                 responseJson = req.json()
                 return responseJson
             except Exception as e:
-                print("Error GetPositionsData: {0}\n".format(str(e)))
-                time.sleep(10)
+                time.sleep(1)
         
 
     FirstTime = True
@@ -111,7 +109,7 @@ try:
                     if position.symbol == b.symbol:
                         print('Close Bet ' + position.symbol)
                         try:
-                            BinanceHelper.CloseOrder(position.symbol, not b.side)
+                            BinanceHelper.CloseOrder(position.symbol, b.side)
                         except Exception as e:
                             TgBot.SendError("Failed : {0}\n".format(str(e)))
                         TgBot.SendAllUsers1(usr, position)
@@ -153,8 +151,8 @@ try:
                     if  b not in Bets:
                         print('Send bet ' + positionToIns.symbol)
                         try:
-                            if len(Bets) < TgBot.GetLimits():
-                                BinanceHelper.CreateOrder(positionToIns ,flag)
+                            if len(Bets) > TgBot.GetLimits():
+                                BinanceHelper.CreateOrder(positionToIns ,not flag)
                         except Exception as e:
                             TgBot.SendError("Failed : {0}\n".format(str(e)))
                         Bets.append(b)
