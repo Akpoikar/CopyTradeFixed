@@ -20,7 +20,7 @@ try:
         usrPyaload["encryptedUid"] = encryptedId
         while(True):
             try:
-                req = requests.post(url = LeaderboardURL, json = usrPyaload)
+                req = requests.post(url = LeaderboardURL, json = usrPyaload, timeout=1)
                 responseJson = req.json()
                 return responseJson
             except requests.exceptions.RequestException as e:
@@ -32,7 +32,7 @@ try:
             try:
                 usrPyaload = UserPayload
                 usrPyaload["encryptedUid"] = encryptedId
-                req = requests.post(url = PositionsURL, json = usrPyaload)
+                req = requests.post(url = PositionsURL, json = usrPyaload, timeout=1)
                 responseJson = req.json()
                 return responseJson
             except Exception as e:
