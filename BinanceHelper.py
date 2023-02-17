@@ -123,34 +123,39 @@ def CloseAllOrders():
 
     for o in orders:
         if float(o['maintMargin']) > 0:
-            CloseOrder(o['symbol'], 'SELL')
-            continue
-            precision = GetPrecision(o['symbol'])
-            q = float("{:.{}f}".format((-1*float(o['positionAmt'])),precision))    
-            client.futures_create_order(
-                symbol=o['symbol'],
-                type='MARKET',
-                side='SELL',
-                quantity=str(abs(q))
-            )
+            
+            CloseOrder(o['symbol'])
+            
+            # precision = GetPrecision(o['symbol'])
+            # q = float("{:.{}f}".format((-1*float(o['positionAmt'])),precision)) 
+            # Term = ''
+            # if q < 0:
+            #     Term = 'BUY'
+            # else:
+            #     Term = 'SELL'   
+            # client.futures_create_order(
+            #     symbol=o['symbol'],
+            #     type='MARKET',
+            #     side=Term,
+            #     quantity=str(abs(q))
+            # )
 
 # CloseAllOrders()
 
-def CloseOrder(Pos, side):
+def CloseOrder(Pos):
     client = Client(API_Key, Secret_Key)
     orders = client.futures_account()['positions']
     
     for o in orders:
         if float(o['maintMargin']) > 0 and o['symbol'] == Pos:
          
-            Term = ''
-            if side == True:
-                Term = 'BUY'
-            else:
-                Term = 'SELL'
-
             precision = GetPrecision(Pos)
             q = float("{:.{}f}".format((float(o['positionAmt'])),precision))
+            Term = ''
+            if q < 0:
+                Term = 'BUY'
+            else:
+                Term = 'SELL'  
             client.futures_create_order(
                 symbol=o['symbol'],
                 type='MARKET',
@@ -159,6 +164,6 @@ def CloseOrder(Pos, side):
             )
 
 # CloseAllOrders()
-# CloseOrder('STGUSDT',False)
+# CloseOrder('CELOUSDT',False)
 #info = client.get_symbol_info(symbol='BNBBTC')
 print('End')

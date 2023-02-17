@@ -109,7 +109,7 @@ try:
                     if position.symbol == b.symbol:
                         print('Close Bet ' + position.symbol)
                         try:
-                            BinanceHelper.CloseOrder(position.symbol, b.side)
+                            BinanceHelper.CloseOrder(position.symbol)
                         except Exception as e:
                             TgBot.SendError("Failed : {0}\n".format(str(e)))
                         TgBot.SendAllUsers1(usr, position)
@@ -151,8 +151,11 @@ try:
                     if  b not in Bets:
                         print('Send bet ' + positionToIns.symbol)
                         try:
-                            if len(Bets) > TgBot.GetLimits():
-                                BinanceHelper.CreateOrder(positionToIns ,not flag)
+                            if len(Bets) < TgBot.positionLongLimit:
+                                BinanceHelper.CreateOrder(positionToIns , flag)
+                            elif len(Bets) > TgBot.positionShortLimit:
+                                BinanceHelper.CloseAllOrders()
+                                BinanceHelper.CreateOrder(positionToIns , not flag)
                         except Exception as e:
                             TgBot.SendError("Failed : {0}\n".format(str(e)))
                         Bets.append(b)
