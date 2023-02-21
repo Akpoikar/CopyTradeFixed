@@ -1,7 +1,3 @@
-
-from types import NoneType
-
-
 class User:
     Positions = []
     def __init__(self,name,id,pos):
