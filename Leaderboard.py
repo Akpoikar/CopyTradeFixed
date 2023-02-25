@@ -21,6 +21,7 @@ try:
         while(True):
             try:
                 req = requests.post(url = LeaderboardURL, json = usrPyaload, timeout=10)
+                time.sleep(10)
                 responseJson = req.json()
                 return responseJson
             except requests.exceptions.RequestException as e:
@@ -33,6 +34,8 @@ try:
                 usrPyaload = UserPayload
                 usrPyaload["encryptedUid"] = encryptedId
                 req = requests.post(url = PositionsURL, json = usrPyaload, timeout=10)
+                time.sleep(10)
+
                 if req.status_code != 200:
                     print(req.status_code)
                 responseJson = req.json()
