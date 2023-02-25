@@ -33,6 +33,8 @@ try:
                 usrPyaload = UserPayload
                 usrPyaload["encryptedUid"] = encryptedId
                 req = requests.post(url = PositionsURL, json = usrPyaload, timeout=1)
+                if req.status_code != 200:
+                    print(req.status_code)
                 responseJson = req.json()
                 return responseJson
             except Exception as e:
