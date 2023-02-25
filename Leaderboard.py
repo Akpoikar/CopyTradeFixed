@@ -20,11 +20,11 @@ try:
         usrPyaload["encryptedUid"] = encryptedId
         while(True):
             try:
-                req = requests.post(url = LeaderboardURL, json = usrPyaload, timeout=1)
+                req = requests.post(url = LeaderboardURL, json = usrPyaload, timeout=10)
                 responseJson = req.json()
                 return responseJson
             except requests.exceptions.RequestException as e:
-                time.sleep(1)
+                time.sleep(10)
             
 
     def GetPositionsData(encryptedId):
@@ -32,13 +32,13 @@ try:
             try:
                 usrPyaload = UserPayload
                 usrPyaload["encryptedUid"] = encryptedId
-                req = requests.post(url = PositionsURL, json = usrPyaload, timeout=1)
+                req = requests.post(url = PositionsURL, json = usrPyaload, timeout=10)
                 if req.status_code != 200:
                     print(req.status_code)
                 responseJson = req.json()
                 return responseJson
             except Exception as e:
-                time.sleep(1)
+                time.sleep(10)
         
 
     FirstTime = True
