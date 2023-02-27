@@ -22,10 +22,11 @@ try:
             try:
                 req = requests.post(url = LeaderboardURL, json = usrPyaload)
                 responseJson = req.json()
+                time.sleep(5)
                 return responseJson
             except requests.exceptions.RequestException as e:
                 print("Error GetLeaderboardData: {0}\n".format(str(e)))
-                time.sleep(10)
+                time.sleep(5)
             
 
     def GetPositionsData(encryptedId):
@@ -34,11 +35,12 @@ try:
                 usrPyaload = UserPayload
                 usrPyaload["encryptedUid"] = encryptedId
                 req = requests.post(url = PositionsURL, json = usrPyaload)
+                time.sleep(5)
                 responseJson = req.json()
                 return responseJson
             except Exception as e:
                 print("Error GetPositionsData: {0}\n".format(str(e)))
-                time.sleep(10)
+                time.sleep(5)
         
 
     FirstTime = True
