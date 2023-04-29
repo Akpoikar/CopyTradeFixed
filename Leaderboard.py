@@ -7,7 +7,7 @@ from Person  import User
 from Person import Position
 from Person import Bet
 from collections import defaultdict
-import BinanceHelper
+import BybitHelper
 try:
     LeaderboardURL = "https://www.binance.com/bapi/futures/v2/public/future/leaderboard/getOtherLeaderboardBaseInfo"
     PositionsURL = "https://www.binance.com/bapi/futures/v1/public/future/leaderboard/getOtherPosition"
@@ -113,7 +113,7 @@ try:
                     if position.symbol == b.symbol:
                         print('Close Bet ' + position.symbol)
                         try:
-                            BinanceHelper.CloseOrder(position.symbol, not b.side)
+                            BybitHelper.CloseOrder(position.symbol)
                         except Exception as e:
                             TgBot.SendError("Failed : {0}\n".format(str(e)))
                         TgBot.SendAllUsers1(usr, position)
@@ -155,8 +155,7 @@ try:
                     if  b not in Bets:
                         print('Send bet ' + positionToIns.symbol)
                         try:
-                            if len(Bets) < TgBot.GetLimits():
-                                BinanceHelper.CreateOrder(positionToIns ,flag)
+                                BybitHelper.CreateOrder(positionToIns , flag)
                         except Exception as e:
                             TgBot.SendError("Failed : {0}\n".format(str(e)))
                         Bets.append(b)
@@ -191,4 +190,4 @@ except Exception as e:
     logf = open("logger.log", "w")
     logf.write("Failed : {0}\n".format(str(e)))
     # TgBot.SendError("Failed : {0}\n".format(str(e)))
-    BinanceHelper.CloseAllOrders()
+    BybitHelper.CloseAllOrders()
