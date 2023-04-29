@@ -1,5 +1,4 @@
 import requests
-import telebot
 import threading
 import TgBot
 import time
