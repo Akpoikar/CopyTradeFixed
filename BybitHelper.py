@@ -2,18 +2,8 @@ import TgBot
 import bybit
 from Person import Position
 
-import os
-import ta
-import ccxt
-import time
-import json
-import uuid
-import random
-import sqlite3
-import datetime
 import pandas as pd
 from inspect import currentframe
-import pybit
 from binance.client import Client
 from colorama import init, Fore, Back, Style
 from pybit.unified_trading import HTTP
@@ -64,9 +54,10 @@ def CreateOrder(positionToIns,side):
     laverage = int(TgBot.GetLeverage())
     if laverage == 0:
         laverage = int(positionToIns.leverage)
-
-    client.set_leverage(category="linear", symbol=positionToIns.symbol, buyLeverage=str(laverage), sellLeverage=str(laverage))
-
+    try:
+        client.set_leverage(category="linear", symbol=positionToIns.symbol, buyLeverage=str(laverage), sellLeverage=str(laverage))
+    except:
+        None
 
     price = GetPrice(positionToIns.symbol)
     q = GetSymbolStep(positionToIns.symbol)
@@ -138,9 +129,10 @@ def CloseOrder(Pos):
     limit=1,symbol=Pos,)
 
     res = pos['result']['list'][0]
-    qt = res['size']
-    if qt == '0':
+    qt = float(res['size'])
+    if qt == 0:
         return
+    quantity = res['size']
     price = res['markPrice']
     Term = res['side']
     if Term == 'Buy':
@@ -152,7 +144,7 @@ def CloseOrder(Pos):
         symbol=Pos,
         side=Term,
         orderType="Market",
-        qty=qt,
+        qty=quantity,
         price=price,
         timeInForce="GoodTillCancel",
         reduceOnly=True
